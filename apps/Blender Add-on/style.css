@@ -1,0 +1,131 @@
+/* =========================================================
+   SETTINGS — edit these to change the whole site
+   ========================================================= */
+@import url("https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;800&display=swap");
+
+:root {
+  /* Colors */
+  --bg-color:      #0f0f0f;   /* page background */
+  --text-color:    #E8ECF2;   /* main text */
+  --muted-color:   #9AA6B8;   /* secondary text */
+  --accent-color:  #7FB3D5;   /* links, hover outline */
+  --tile-color:    #273044;   /* tile background (shown if image missing) */
+
+  /* Fonts */
+  --font-heading:  "Manrope", "Segoe UI", Helvetica, Arial, sans-serif;
+  --font-body:     "Manrope", "Segoe UI", Helvetica, Arial, sans-serif;
+  --size-heading:  2.4rem;
+  --size-body:     1.0rem;
+
+  /* Grid */
+  --grid-items:    15;         /* how many images: loads folders 01, 02 … */
+  --grid-columns:  3;         /* images per row on desktop */
+  --grid-gap:      16px;
+  --tile-ratio:    16 / 9;    /* image shape */
+
+  /* Media folders & file names (inside each numbered folder) */
+  --media-folder:  "media";       /* media/01/, media/02/ … */
+  --image-file:    "image.jpg";   /* thumbnail in each folder */
+  --video-file:    "video.mp4";   /* video in each folder */
+}
+
+/* =========================================================
+   LAYOUT — usually no need to edit below
+   ========================================================= */
+*, *::before, *::after { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--bg-color);
+  color: var(--text-color);
+  font-family: var(--font-body);
+  font-size: var(--size-body);
+  line-height: 1.6;
+}
+
+.wrap {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 48px 24px 64px;
+}
+
+h1 {
+  font-family: var(--font-heading);
+  font-size: var(--size-heading);
+  font-weight: 800;
+  line-height: 1.15;
+  margin: 0 0 24px;
+}
+
+a { color: var(--accent-color); }
+
+/* ---- Grid page ---- */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(var(--grid-columns), 1fr);
+  gap: var(--grid-gap);
+}
+
+.tile {
+  position: relative;
+  display: block;
+  aspect-ratio: var(--tile-ratio);
+  background: var(--tile-color);
+  border-radius: 6px;
+  overflow: hidden;
+  outline: 2px solid transparent;
+  outline-offset: 3px;
+  transition: outline-color 0.15s;
+}
+.tile:hover, .tile:focus-visible { outline-color: var(--accent-color); }
+
+.tile img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.tile span {
+  position: absolute;
+  left: 12px;
+  bottom: 8px;
+  font-weight: 600;
+  color: #fff;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.7);
+}
+
+/* ---- Sub page ---- */
+.back {
+  display: inline-block;
+  margin-bottom: 24px;
+  text-decoration: none;
+  font-weight: 600;
+}
+.back:hover { text-decoration: underline; }
+
+.video-box {
+  aspect-ratio: 16 / 9;
+  background: #000;
+  border-radius: 6px;
+  overflow: hidden;
+  margin-bottom: 32px;
+}
+.video-box video {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.body-text {
+  max-width: 68ch;
+  color: var(--muted-color);
+  white-space: pre-line;
+}
+
+/* ---- Responsive ---- */
+@media (max-width: 900px) { .grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 560px) {
+  .grid { grid-template-columns: 1fr; }
+  :root { --size-heading: 1.8rem; }
+}

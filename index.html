@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Portal</title>
+  <link rel="stylesheet" href="theme.css" />
+  <style>
+    /* ── Layout ── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      min-height: 100vh;
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-body);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: var(--space-xl) var(--space-md);
+    }
+
+    /* ── Header ── */
+    header {
+      width: 100%;
+      max-width: var(--max-width);
+      margin-bottom: var(--space-xl);
+      text-align: center;
+    }
+    header h1 {
+      font-family: var(--font-display);
+      font-size: var(--size-title);
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      color: var(--accent);
+      line-height: 1.1;
+    }
+    header p {
+      margin-top: 0.5rem;
+      font-size: var(--size-subtitle);
+      color: var(--text-muted);
+      letter-spacing: 0.04em;
+    }
+
+    /* ── Grid ── */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(var(--cols), 1fr);
+      gap: var(--gap);
+      width: 100%;
+      max-width: var(--max-width);
+    }
+
+    /* ── Card ── */
+    .card {
+      background: var(--card-bg);
+      border: var(--card-border);
+      border-radius: var(--radius);
+      padding: var(--card-padding);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0.75rem;
+      cursor: pointer;
+      text-decoration: none;
+      color: inherit;
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.22s cubic-bezier(.22,1,.36,1),
+                  box-shadow 0.22s cubic-bezier(.22,1,.36,1),
+                  background 0.2s;
+      min-height: var(--card-min-height);
+      box-shadow: var(--card-shadow);
+    }
+    .card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: var(--card-hover-overlay);
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
+    .card:hover { transform: translateY(-6px) scale(1.02); box-shadow: var(--card-shadow-hover); }
+    .card:hover::before { opacity: 1; }
+    .card:active { transform: translateY(-2px) scale(0.99); }
+
+    .card-icon {
+      font-size: var(--icon-size);
+      line-height: 1;
+      filter: drop-shadow(0 2px 6px rgba(0,0,0,.18));
+    }
+    .card-img {
+      width: var(--img-size);
+      height: var(--img-size);
+      object-fit: cover;
+      border-radius: calc(var(--radius) - 4px);
+    }
+    .card-label {
+      font-family: var(--font-display);
+      font-size: var(--size-label);
+      font-weight: 600;
+      text-align: center;
+      color: var(--card-label-color);
+      letter-spacing: -0.01em;
+      z-index: 1;
+    }
+    .card-desc {
+      font-size: var(--size-desc);
+      color: var(--card-desc-color);
+      text-align: center;
+      line-height: 1.4;
+      z-index: 1;
+    }
+
+    /* ── Footer ── */
+    footer {
+      margin-top: var(--space-xl);
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      opacity: 0.5;
+      letter-spacing: 0.06em;
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 900px) {
+      .grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 540px) {
+      .grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Lynh's Portal</h1>
+    <p>CHOOSE YOUR DESTINATION</p>
+  </header>
+
+  <main class="grid" id="grid">
+
+    <!-- ── Cards: edit href, icon/img, label, desc ── -->
+
+    <a class="card" href="https://www.lynhmotion.com/" target="_blank" rel="noopener">
+      <span class="card-label">LynhMotion</span>
+      <span class="card-desc">My Portfolio</span>
+    </a>
+
+    <a class="card" href="apps/Document/index.html">
+      <img src="./ico/collage.png">
+      <span class="card-label">Document</span>
+      <span class="card-desc">Document</span>
+    </a>
+
+    <a class="card" href="apps/Coordinator/index.html">
+      <img src="./ico/coordinator.png">
+      <span class="card-label">Coordinator</span>
+      <span class="card-desc">Plate Position Calculator</span>
+    </a>
+
+    <a class="card" href="apps/Stage Previewer 3.0/index.html">
+      <img src="./ico/stage.png">
+      <span class="card-label">Stage Previewer 3.0</span>
+      <span class="card-desc">Fast Preview Visuals on Stage</span>
+    </a>
+
+    <a class="card" href="apps/Calculator/index.html">
+      <img src="./ico/calculator.png">
+      <span class="card-label">Calculator</span>
+      <span class="card-desc">Geometry &bull; Ratio &bull; Sensor</span>
+    </a>
+
+    <a class="card" href="apps/MindFlow/index.html">
+      <img src="./ico/mindflow.png">
+      <span class="card-label">MindFlow</span>
+      <span class="card-desc">MyMindMap</span>
+    </a>
+
+    <a class="card" href="apps/Blender Add-on/index.html">
+      <img src="./ico/Blenderplugin.png">
+      <span class="card-label">Addons</span>
+      <span class="card-desc">BlenderAddons</span>
+    </a>
+
+    <a class="card" href="https://drive.google.com/drive/folders/1iiPTS3exFBmb0zNisUmcjyZQlWP2-nuT/" target="_blank" rel="noopener">
+      <img src="./ico/ue.png">
+      <span class="card-label">Plugin</span>
+      <span class="card-desc">UEPlugin</span>
+    </a>
+
+    <a class="card">
+      <span class="card-label">Coming soon</span>
+    </a>
+
+    <!-- Add more cards here following the same pattern -->
+
+  </main>
+
+  <footer>LYNH · Vibe-coding for fun</footer>
+
+</body>
+</html>

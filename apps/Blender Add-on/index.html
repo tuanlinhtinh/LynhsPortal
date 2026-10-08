@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Gallery</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="content.js"></script>
+</head>
+<body>
+  <main class="wrap">
+    <h1 id="site-title"></h1>
+    <div class="grid" id="grid"></div>
+  </main>
+
+  <script>
+    // Read settings from style.css
+    const css = getComputedStyle(document.documentElement);
+    const setting = name => css.getPropertyValue(name).trim().replace(/^["']|["']$/g, "");
+
+    const count  = parseInt(setting("--grid-items"), 10) || 6;
+    const folder = setting("--media-folder");
+    const image  = setting("--image-file");
+
+    document.getElementById("site-title").textContent = SITE_TITLE;
+    document.title = SITE_TITLE;
+
+    const grid = document.getElementById("grid");
+    for (let i = 1; i <= count; i++) {
+      const id = String(i).padStart(2, "0");               // 1 -> "01"
+      const title = (CONTENT[id] && CONTENT[id].title) || id;
+
+      const a = document.createElement("a");
+      a.className = "tile";
+      a.href = "page.html?id=" + id;
+      a.innerHTML = `<img src="${folder}/${id}/${image}" alt="${title}" loading="lazy"
+                          onerror="this.remove()"><span>${title}</span>`;
+      grid.appendChild(a);
+    }
+  </script>
+</body>
+</html>

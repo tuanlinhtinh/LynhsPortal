@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Plate Position Calculator</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --bg: #111210; --surface: #1a1b18; --surface2: #222320;
+  --border: rgba(255,255,255,0.08); --border2: rgba(255,255,255,0.14);
+  --text: #e8e6e0; --text2: #8a887f; --text3: #555450;
+  --accent: #c8f060; --accent-text: #3a4a08;
+  --mono: 'JetBrains Mono','Courier New',monospace;
+}
+body { font-family: var(--mono); background: var(--bg); color: var(--text); min-height: 100vh; padding: 20px; }
+h1 { font-size: 11px; font-weight: 500; letter-spacing: 0.2em; text-transform: uppercase; color: var(--text3); margin-bottom: 16px; }
+.layout { display: flex; gap: 14px; align-items: flex-start; flex-wrap: wrap; }
+
+.sidebar { width: 220px; flex-shrink: 0; display: flex; flex-direction: column; gap: 10px; }
+.panel { background: var(--surface); border: 0.5px solid var(--border); border-radius: 8px; padding: 12px 14px; }
+.panel-label { font-size: 9px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--text3); margin-bottom: 10px; }
+.row { display: flex; gap: 6px; align-items: center; margin-bottom: 7px; }
+.row:last-child { margin-bottom: 0; }
+.row-label { font-size: 10px; color: var(--text2); width: 18px; flex-shrink: 0; }
+input[type="number"] {
+  background: var(--surface2); border: 0.5px solid var(--border2); border-radius: 5px;
+  color: var(--text); font-family: var(--mono); font-size: 12px; padding: 5px 8px; width: 100%;
+  outline: none; -moz-appearance: textfield; transition: border-color 0.15s;
+}
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button { -webkit-appearance: none; }
+input[type="number"]:focus { border-color: var(--accent); }
+.sep { font-size: 10px; color: var(--text3); flex-shrink: 0; }
+
+.toggle-row { display: flex; align-items: center; justify-content: space-between; cursor: pointer; padding: 3px 0; }
+.toggle-label { font-size: 11px; color: var(--text2); }
+.toggle { width: 30px; height: 16px; background: var(--surface2); border: 0.5px solid var(--border2); border-radius: 8px; position: relative; transition: background 0.2s, border-color 0.2s; flex-shrink: 0; }
+.toggle.on { background: var(--accent); border-color: var(--accent); }
+.toggle::after { content:''; position: absolute; top: 2px; left: 2px; width: 10px; height: 10px; border-radius: 50%; background: var(--text3); transition: left 0.18s, background 0.2s; }
+.toggle.on::after { left: 16px; background: var(--accent-text); }
+
+.grid-btns { display: flex; gap: 5px; margin-top: 8px; }
+.grid-btn {
+  flex: 1; padding: 5px 2px; font-family: var(--mono); font-size: 11px;
+  background: var(--surface2); border: 0.5px solid var(--border2); border-radius: 4px;
+  color: var(--text2); cursor: pointer; text-align: center; transition: background 0.12s, color 0.12s, border-color 0.12s;
+}
+.grid-btn:hover { background: #2a2b28; color: var(--text); }
+.grid-btn.active { background: var(--accent); border-color: var(--accent); color: var(--accent-text); font-weight: 600; }
+
+.upload-zone {
+  border: 0.5px dashed var(--border2); border-radius: 5px; padding: 8px;
+  text-align: center; cursor: pointer; font-size: 10px; color: var(--text3);
+  transition: border-color 0.15s, color 0.15s; position: relative; overflow: hidden;
+}
+.upload-zone:hover { border-color: var(--accent); color: var(--text2); }
+.upload-zone input { position: absolute; inset: 0; opacity: 0; cursor: pointer; }
+.upload-zone.has-img { color: var(--accent); border-color: rgba(200,240,96,0.3); }
+.opacity-row { display: flex; align-items: center; gap: 8px; margin-top: 7px; }
+.opacity-row label { font-size: 10px; color: var(--text3); flex-shrink: 0; width: 16px; }
+input[type="range"] {
+  flex: 1; height: 3px; -webkit-appearance: none; appearance: none;
+  background: var(--surface2); border-radius: 2px; outline: none; cursor: pointer;
+}
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none; width: 12px; height: 12px; border-radius: 50%;
+  background: var(--accent); cursor: pointer;
+}
+input[type="range"]::-moz-range-thumb {
+  width: 12px; height: 12px; border-radius: 50%; background: var(--accent); cursor: pointer; border: none;
+}
+.opacity-val { font-size: 10px; color: var(--text2); width: 28px; text-align: right; flex-shrink: 0; }
+.clear-btn {
+  margin-top: 6px; width: 100%; padding: 4px; font-family: var(--mono); font-size: 10px;
+  background: transparent; border: 0.5px solid var(--border2); border-radius: 4px;
+  color: var(--text3); cursor: pointer; transition: color 0.12s, border-color 0.12s;
+}
+.clear-btn:hover { color: var(--text); border-color: var(--border2); }
+
+.readout-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 7px; }
+.readout-cell { display: flex; flex-direction: column; gap: 2px; }
+.readout-key { font-size: 9px; color: var(--text3); letter-spacing: 0.12em; text-transform: uppercase; }
+.readout-val { font-size: 13px; font-weight: 500; color: var(--text); }
+.readout-val.accent { color: var(--accent); }
+.readout-unit { font-size: 10px; color: var(--text3); margin-left: 1px; }
+.readout-full { grid-column: 1 / -1; }
+.divider { height: 0.5px; background: var(--border); margin: 4px 0; }
+
+.hint-row { font-size: 9px; color: var(--text3); line-height: 1.8; }
+.hint-row kbd { background: var(--surface2); border: 0.5px solid var(--border2); border-radius: 3px; padding: 1px 4px; font-family: var(--mono); font-size: 9px; color: var(--text2); }
+
+/* viewport */
+.viewport-outer { flex: 1; min-width: 300px; display: flex; flex-direction: column; gap: 8px; }
+
+/* zoom toolbar */
+.zoom-bar {
+  display: flex; align-items: center; gap: 8px;
+  background: var(--surface); border: 0.5px solid var(--border); border-radius: 6px;
+  padding: 6px 10px;
+}
+.zoom-btn {
+  width: 24px; height: 24px; border-radius: 4px; border: 0.5px solid var(--border2);
+  background: var(--surface2); color: var(--text); font-family: var(--mono); font-size: 14px;
+  cursor: pointer; display: flex; align-items: center; justify-content: center;
+  transition: background 0.12s, color 0.12s; flex-shrink: 0; line-height: 1;
+}
+.zoom-btn:hover { background: #2a2b28; color: var(--accent); }
+.zoom-slider { flex: 1; }
+.zoom-label { font-size: 11px; color: var(--accent); font-weight: 500; min-width: 42px; text-align: right; }
+.zoom-reset {
+  padding: 4px 8px; border-radius: 4px; border: 0.5px solid var(--border2);
+  background: transparent; color: var(--text3); font-family: var(--mono); font-size: 10px;
+  cursor: pointer; transition: color 0.12s, border-color 0.12s; white-space: nowrap;
+}
+.zoom-reset:hover { color: var(--text); border-color: var(--accent); }
+
+.viewport-wrap {
+  border: 0.5px solid var(--border); border-radius: 8px;
+  overflow: hidden; background: #0e0f0d; position: relative;
+  /* fixed display height — scroll inside when zoomed */
+}
+canvas { display: block; cursor: crosshair; user-select: none; }
+</style>
+</head>
+<body>
+<h1>Plate Position Calculator</h1>
+<div class="layout">
+
+  <div class="sidebar">
+
+    <div class="panel">
+      <div class="panel-label">Canvas</div>
+      <div class="row"><span class="row-label">W</span><input type="number" id="cw" value="800" min="100" max="3000" step="10"><span class="sep">px</span></div>
+      <div class="row"><span class="row-label">H</span><input type="number" id="ch" value="600" min="100" max="3000" step="10"><span class="sep">px</span></div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-label">Solid</div>
+      <div class="row"><span class="row-label">W</span><input type="number" id="sw" value="200" min="4" max="2000" step="2"><span class="sep">px</span></div>
+      <div class="row"><span class="row-label">H</span><input type="number" id="sh" value="150" min="4" max="2000" step="2"><span class="sep">px</span></div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-label">Set Position</div>
+      <div class="row"><span class="row-label">X</span><input type="number" id="px-in" value="400"><span class="sep">px</span></div>
+      <div class="row"><span class="row-label">Y</span><input type="number" id="py-in" value="300"><span class="sep">px</span></div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-label">Options</div>
+      <div class="toggle-row" id="snap-toggle">
+        <span class="toggle-label">Snap to grid</span>
+        <div class="toggle" id="snap-knob"></div>
+      </div>
+      <div style="margin-top:12px;">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+          <span class="toggle-label">Grid size</span>
+          <span style="font-size:11px;font-weight:500;color:var(--accent);" id="grid-val">10 px</span>
+        </div>
+        <div class="grid-btns" id="grid-btns">
+          <button class="grid-btn" data-g="1">1</button>
+          <button class="grid-btn" data-g="2">2</button>
+          <button class="grid-btn" data-g="5">5</button>
+          <button class="grid-btn active" data-g="10">10</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-label">Canvas BG Image</div>
+      <div class="upload-zone" id="bg-zone">
+        <input type="file" id="bg-file" accept="image/jpeg,image/jpg,image/png,image/webp">
+        <span id="bg-zone-label">click to load JPG</span>
+      </div>
+      <div class="opacity-row">
+        <label>α</label>
+        <input type="range" id="bg-opacity" min="0" max="100" value="100">
+        <span class="opacity-val" id="bg-opacity-val">100%</span>
+      </div>
+      <button class="clear-btn" id="bg-clear">clear image</button>
+    </div>
+
+    <div class="panel">
+      <div class="panel-label">Plate Image</div>
+      <div class="upload-zone" id="plate-zone">
+        <input type="file" id="plate-file" accept="image/png,image/jpeg,image/webp">
+        <span id="plate-zone-label">click to load PNG</span>
+      </div>
+      <div class="opacity-row">
+        <label>α</label>
+        <input type="range" id="plate-opacity" min="0" max="100" value="100">
+        <span class="opacity-val" id="plate-opacity-val">100%</span>
+      </div>
+      <button class="clear-btn" id="plate-clear">clear image</button>
+    </div>
+
+    <div class="panel">
+      <div class="panel-label">Center Readout</div>
+      <div class="readout-grid">
+        <div class="readout-cell"><span class="readout-key">X</span><span class="readout-val accent" id="r-x">400<span class="readout-unit">px</span></span></div>
+        <div class="readout-cell"><span class="readout-key">Y</span><span class="readout-val accent" id="r-y">300<span class="readout-unit">px</span></span></div>
+        <div class="readout-cell"><span class="readout-key">offset X</span><span class="readout-val" id="r-ox">0<span class="readout-unit">px</span></span></div>
+        <div class="readout-cell"><span class="readout-key">offset Y</span><span class="readout-val" id="r-oy">0<span class="readout-unit">px</span></span></div>
+        <div class="divider readout-full"></div>
+        <div class="readout-cell"><span class="readout-key">% X</span><span class="readout-val" id="r-px">50.00<span class="readout-unit">%</span></span></div>
+        <div class="readout-cell"><span class="readout-key">% Y</span><span class="readout-val" id="r-py">50.00<span class="readout-unit">%</span></span></div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="hint-row">
+        <kbd>drag</kbd> plate to move<br>
+        <kbd>scroll</kbd> or <kbd>+/−</kbd> to zoom<br>
+        <kbd>middle-drag</kbd> or <kbd>space+drag</kbd> to pan
+      </div>
+    </div>
+
+  </div>
+
+  <div class="viewport-outer">
+    <!-- zoom toolbar -->
+    <div class="zoom-bar">
+      <button class="zoom-btn" id="zoom-out">−</button>
+      <input type="range" class="zoom-slider" id="zoom-slider" min="10" max="800" value="100" step="1">
+      <button class="zoom-btn" id="zoom-in">+</button>
+      <span class="zoom-label" id="zoom-label">100%</span>
+      <button class="zoom-reset" id="zoom-reset">fit</button>
+    </div>
+    <div class="viewport-wrap" id="vwrap">
+      <canvas id="c"></canvas>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const canvas = document.getElementById('c');
+const ctx = canvas.getContext('2d');
+const vwrap = document.getElementById('vwrap');
+
+// ---- state ----
+let cw = 800, ch = 600, sw = 200, sh = 150;
+let px = 400, py = 300;
+let dragging = false, dragOffX = 0, dragOffY = 0;
+let panning = false, panStartX = 0, panStartY = 0, panOriginX = 0, panOriginY = 0;
+let spaceDown = false;
+
+let fitScale = 1;   // scale so canvas fits viewport width
+let zoom = 1.0;     // user zoom multiplier (1 = fit)
+let panX = 0, panY = 0;  // offset in screen px
+
+let snapEnabled = false;
+let GRID = 10;
+let bgImg = null, bgOpacity = 1;
+let plateImg = null, plateOpacity = 1;
+
+// zoom steps (log scale for slider)
+const ZOOM_MIN = 0.1, ZOOM_MAX = 8;
+
+function totalScale() { return fitScale * zoom; }
+
+// ---- geometry ----
+function getCorners() {
+  const hw = sw/2, hh = sh/2;
+  return [
+    {x: px-hw, y: py-hh, label:'TL'},
+    {x: px+hw, y: py-hh, label:'TR'},
+    {x: px+hw, y: py+hh, label:'BR'},
+    {x: px-hw, y: py+hh, label:'BL'},
+  ];
+}
+function snapV(v) { return Math.round(v / GRID) * GRID; }
+function clampPlate() {
+  px = Math.max(sw/2, Math.min(cw-sw/2, px));
+  py = Math.max(sh/2, Math.min(ch-sh/2, py));
+}
+
+// Convert mouse event → canvas coordinates (in logical canvas px)
+function toCanvas(e) {
+  const rect = canvas.getBoundingClientRect();
+  const s = e.touches ? e.touches[0] : e;
+  const sx = s.clientX - rect.left;  // screen px relative to canvas element
+  const sy = s.clientY - rect.top;
+  // canvas element is drawn at totalScale(), and canvas element origin is at (0,0)
+  // but the canvas element itself accounts for pan via CSS translate on wrapper,
+  // so we just divide by totalScale
+  return [sx / totalScale(), sy / totalScale()];
+}
+
+function inPlate(mx, my) {
+  return mx >= px-sw/2 && mx <= px+sw/2 && my >= py-sh/2 && my <= py+sh/2;
+}
+
+// ---- readout ----
+function updateReadout() {
+  const rx = Math.round(px), ry = Math.round(py);
+  const ox = rx - Math.round(cw/2), oy = ry - Math.round(ch/2);
+  const u = s => `<span class="readout-unit">${s}</span>`;
+  document.getElementById('r-x').innerHTML  = rx + u('px');
+  document.getElementById('r-y').innerHTML  = ry + u('px');
+  document.getElementById('r-ox').innerHTML = (ox>=0?'+':'') + ox + u('px');
+  document.getElementById('r-oy').innerHTML = (oy>=0?'+':'') + oy + u('px');
+  document.getElementById('r-px').innerHTML = ((px/cw)*100).toFixed(2) + u('%');
+  document.getElementById('r-py').innerHTML = ((py/ch)*100).toFixed(2) + u('%');
+  document.getElementById('px-in').value = rx;
+  document.getElementById('py-in').value = ry;
+}
+
+// ---- zoom UI sync ----
+function syncZoomUI() {
+  const pct = Math.round(zoom * 100);
+  document.getElementById('zoom-label').textContent = pct + '%';
+  // slider is linear 10–800
+  document.getElementById('zoom-slider').value = Math.round(zoom * 100);
+}
+
+function setZoom(newZoom, originScreenX, originScreenY) {
+  // clamp
+  newZoom = Math.max(ZOOM_MIN, Math.min(ZOOM_MAX, newZoom));
+  if (newZoom === zoom) return;
+
+  // zoom toward the given screen origin point (default: canvas center)
+  const ts = totalScale();
+  const rect = canvas.getBoundingClientRect();
+  const osx = (originScreenX !== undefined) ? originScreenX - rect.left : canvas.offsetWidth / 2;
+  const osy = (originScreenY !== undefined) ? originScreenY - rect.top  : canvas.offsetHeight / 2;
+
+  // logical point under cursor before zoom
+  const lx = (osx - panX) / ts;
+  const ly = (osy - panY) / ts;
+
+  zoom = newZoom;
+
+  // adjust pan so logical point stays under cursor
+  const newTs = totalScale();
+  panX = osx - lx * newTs;
+  panY = osy - ly * newTs;
+
+  clampPan();
+  syncZoomUI();
+  applyTransform();
+  draw();
+}
+
+function clampPan() {
+  const ts = totalScale();
+  const vw = vwrap.clientWidth || 700;
+  const vh = vwrap.clientHeight || 500;
+  const canvasW = cw * ts, canvasH = ch * ts;
+  // allow some overpan for comfort
+  const margin = 60;
+  panX = Math.max(-(canvasW - margin), Math.min(vw - margin, panX));
+  panY = Math.max(-(canvasH - margin), Math.min(vh - margin, panY));
+}
+
+function applyTransform() {
+  canvas.style.transform = `translate(${panX}px, ${panY}px)`;
+}
+
+// ---- draw ----
+// Labels are drawn in screen-space by temporarily un-scaling
+// so they always appear at a fixed pixel size regardless of zoom.
+const LSIZE = 10.5;   // screen px for label font
+const LPAD  = 4;
+const LLINE = 14;
+
+function drawCornerLabel(cx, cy, corner) {
+  const ts = totalScale();
+  const xPx = Math.round(corner.x), yPx = Math.round(corner.y);
+  const xPct = ((corner.x/cw)*100).toFixed(1);
+  const yPct = ((corner.y/ch)*100).toFixed(1);
+  const line1 = `${xPx}, ${yPx}px`;
+  const line2 = `${xPct}%, ${yPct}%`;
+
+  // Temporarily draw in screen space: save, reset transform to identity scaled by 1/ts
+  ctx.save();
+  ctx.setTransform(1, 0, 0, 1, 0, 0);
+
+  // corner in screen px (accounting for pan)
+  const scx = cx * ts + panX;
+  const scy = cy * ts + panY;
+
+  ctx.font = `500 ${LSIZE}px 'JetBrains Mono', monospace`;
+  const w1 = ctx.measureText(line1).width;
+  const w2 = ctx.measureText(line2).width;
+  const bw = Math.max(w1, w2) + LPAD*2;
+  const bh = LLINE*2 + LPAD*2 - 2;
+
+  const isLeft = corner.x <= px;
+  const isTop  = corner.y <= py;
+  const GAP = 7;
+
+  let bx = isLeft ? scx - bw - GAP : scx + GAP;
+  let by = isTop  ? scy - bh - GAP : scy + GAP;
+
+  // clamp to canvas screen rect
+  const rect = canvas.getBoundingClientRect();
+  // canvas screen origin is at (panX, panY); canvas screen size is cw*ts x ch*ts
+  const scrLeft = panX, scrTop = panY;
+  const scrRight = panX + cw*ts, scrBottom = panY + ch*ts;
+  bx = Math.max(scrLeft + 2, Math.min(scrRight - bw - 2, bx));
+  by = Math.max(scrTop  + 2, Math.min(scrBottom - bh - 2, by));
+
+  ctx.fillStyle = 'rgba(10,11,8,0.86)';
+  ctx.beginPath();
+  ctx.roundRect(bx, by, bw, bh, 3);
+  ctx.fill();
+
+  ctx.fillStyle = '#c8f060';
+  ctx.fillText(line1, bx + LPAD, by + LPAD + LSIZE);
+  ctx.fillStyle = 'rgba(200,240,96,0.55)';
+  ctx.fillText(line2, bx + LPAD, by + LPAD + LSIZE + LLINE);
+
+  ctx.restore();
+}
+
+function drawCenterLabel() {
+  const ts = totalScale();
+  ctx.save();
+  ctx.setTransform(1, 0, 0, 1, 0, 0);
+
+  ctx.font = "500 11px 'JetBrains Mono', monospace";
+  const label = `(${Math.round(px)}, ${Math.round(py)})`;
+  const lw = ctx.measureText(label).width;
+
+  // plate top-center in screen px
+  const scx = px * ts + panX;
+  const scy = (py - sh/2) * ts + panY;
+
+  let bx = scx - lw/2 - 4;
+  let by = scy - 20;
+  if (by < panY + 4) by = (py + sh/2)*ts + panY + 6;
+  // clamp
+  bx = Math.max(panX + 2, Math.min(panX + cw*ts - lw - 10, bx));
+
+  ctx.fillStyle = 'rgba(10,11,8,0.88)';
+  ctx.beginPath();
+  ctx.roundRect(bx, by, lw + 8, 17, 3);
+  ctx.fill();
+  ctx.fillStyle = '#c8f060';
+  ctx.fillText(label, bx + 4, by + 12);
+
+  ctx.restore();
+}
+
+function draw() {
+  const vw = vwrap.clientWidth || 700;
+  const ts = totalScale();
+
+  // canvas pixel dimensions = logical size * totalScale
+  const dw = Math.round(cw * ts);
+  const dh = Math.round(ch * ts);
+  canvas.width  = dw;
+  canvas.height = dh;
+  canvas.style.width  = dw + 'px';
+  canvas.style.height = dh + 'px';
+
+  // Draw everything in logical coordinates, scaled by ts
+  ctx.save();
+  ctx.scale(ts, ts);
+
+  // bg
+  ctx.fillStyle = '#1a1b18';
+  ctx.fillRect(0, 0, cw, ch);
+
+  if (bgImg) {
+    ctx.globalAlpha = bgOpacity;
+    ctx.drawImage(bgImg, 0, 0, cw, ch);
+    ctx.globalAlpha = 1;
+  }
+
+  // grid — thin lines, skip if too dense
+  const minGridScreenPx = 4;
+  if (GRID * ts >= minGridScreenPx) {
+    ctx.strokeStyle = 'rgba(255,255,255,0.08)';
+    ctx.lineWidth = 0.5 / ts;
+    for (let x = 0; x <= cw; x += GRID) { ctx.beginPath(); ctx.moveTo(x,0); ctx.lineTo(x,ch); ctx.stroke(); }
+    for (let y = 0; y <= ch; y += GRID) { ctx.beginPath(); ctx.moveTo(0,y); ctx.lineTo(cw,y); ctx.stroke(); }
+  }
+
+  // center crosshair
+  ctx.strokeStyle = 'rgba(255,255,255,0.18)';
+  ctx.lineWidth = 0.5 / ts;
+  ctx.setLineDash([4/ts, 6/ts]);
+  ctx.beginPath(); ctx.moveTo(cw/2,0); ctx.lineTo(cw/2,ch); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(0,ch/2); ctx.lineTo(cw,ch/2); ctx.stroke();
+  ctx.setLineDash([]);
+
+  // canvas border
+  ctx.strokeStyle = 'rgba(255,255,255,0.35)';
+  ctx.lineWidth = 1.5 / ts;
+  ctx.strokeRect(0.75/ts, 0.75/ts, cw - 1.5/ts, ch - 1.5/ts);
+
+  // plate
+  const rx = px-sw/2, ry = py-sh/2;
+  if (plateImg) {
+    ctx.globalAlpha = plateOpacity;
+    ctx.drawImage(plateImg, rx, ry, sw, sh);
+    ctx.globalAlpha = 1;
+  } else {
+    ctx.fillStyle = '#d8d5ca';
+    ctx.fillRect(rx, ry, sw, sh);
+    ctx.strokeStyle = 'rgba(0,0,0,0.055)';
+    ctx.lineWidth = 0.5 / ts;
+    for (let i=1;i<6;i++) { const lx=rx+sw*i/6; ctx.beginPath(); ctx.moveTo(lx,ry); ctx.lineTo(lx,ry+sh); ctx.stroke(); }
+  }
+
+  // plate border
+  ctx.strokeStyle = 'rgba(0,0,0,0.25)';
+  ctx.lineWidth = 0.5 / ts;
+  ctx.strokeRect(rx, ry, sw, sh);
+
+  // plate center crosshair
+  ctx.strokeStyle = 'rgba(0,0,0,0.3)';
+  ctx.lineWidth = 0.5 / ts;
+  ctx.setLineDash([3/ts, 5/ts]);
+  ctx.beginPath(); ctx.moveTo(rx,py); ctx.lineTo(rx+sw,py); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(px,ry); ctx.lineTo(px,ry+sh); ctx.stroke();
+  ctx.setLineDash([]);
+
+  // plate center dot (fixed screen size)
+  const dotR = 4 / ts;
+  ctx.beginPath(); ctx.arc(px,py,dotR,0,Math.PI*2); ctx.fillStyle='rgba(0,0,0,0.5)'; ctx.fill();
+  ctx.beginPath(); ctx.arc(px,py,dotR*0.45,0,Math.PI*2); ctx.fillStyle='rgba(255,255,255,0.7)'; ctx.fill();
+
+  // corner dots (fixed screen size)
+  const cr = 4 / ts;
+  const corners = getCorners();
+  corners.forEach(c => {
+    ctx.beginPath(); ctx.arc(c.x, c.y, cr, 0, Math.PI*2);
+    ctx.fillStyle = 'rgba(10,11,8,0.75)'; ctx.fill();
+    ctx.strokeStyle = 'rgba(200,240,96,0.7)'; ctx.lineWidth = 1.2/ts; ctx.stroke();
+    const r = cr * 0.6;
+    ctx.strokeStyle = 'rgba(200,240,96,0.6)'; ctx.lineWidth = 1/ts;
+    ctx.beginPath(); ctx.moveTo(c.x-r,c.y); ctx.lineTo(c.x+r,c.y); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(c.x,c.y-r); ctx.lineTo(c.x,c.y+r); ctx.stroke();
+  });
+
+  ctx.restore();
+
+  // ---- labels in screen space (after ctx.restore so scale is reset) ----
+  corners.forEach(c => drawCornerLabel(c.x, c.y, c));
+  drawCenterLabel();
+
+  applyTransform();
+}
+
+// ---- fit/reset ----
+function resetFit() {
+  const vw = vwrap.clientWidth || 700;
+  fitScale = Math.min(1, (vw - 4) / cw);
+  zoom = 1;
+  panX = 0;
+  panY = 0;
+  syncZoomUI();
+  draw();
+}
+
+// ---- zoom bar controls ----
+document.getElementById('zoom-in').addEventListener('click', () => setZoom(zoom * 1.25));
+document.getElementById('zoom-out').addEventListener('click', () => setZoom(zoom / 1.25));
+document.getElementById('zoom-reset').addEventListener('click', resetFit);
+document.getElementById('zoom-slider').addEventListener('input', e => {
+  setZoom(parseInt(e.target.value) / 100);
+});
+
+// scroll to zoom
+vwrap.addEventListener('wheel', e => {
+  e.preventDefault();
+  const factor = e.deltaY < 0 ? 1.1 : 1/1.1;
+  setZoom(zoom * factor, e.clientX, e.clientY);
+}, { passive: false });
+
+// keyboard zoom
+window.addEventListener('keydown', e => {
+  if (e.key === ' ') { spaceDown = true; e.preventDefault(); canvas.style.cursor = 'grab'; }
+  if ((e.key === '=' || e.key === '+') && !e.target.matches('input')) setZoom(zoom * 1.25);
+  if (e.key === '-' && !e.target.matches('input')) setZoom(zoom / 1.25);
+  if (e.key === '0' && !e.target.matches('input')) resetFit();
+});
+window.addEventListener('keyup', e => {
+  if (e.key === ' ') { spaceDown = false; canvas.style.cursor = 'crosshair'; }
+});
+
+// ---- snap toggle ----
+document.getElementById('snap-toggle').addEventListener('click', () => {
+  snapEnabled = !snapEnabled;
+  document.getElementById('snap-knob').classList.toggle('on', snapEnabled);
+  if (snapEnabled) { px=snapV(px); py=snapV(py); clampPlate(); updateReadout(); draw(); }
+});
+
+// ---- grid buttons ----
+document.getElementById('grid-btns').addEventListener('click', e => {
+  const btn = e.target.closest('.grid-btn');
+  if (!btn) return;
+  GRID = parseInt(btn.dataset.g);
+  document.querySelectorAll('.grid-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('grid-val').textContent = GRID + ' px';
+  draw();
+});
+
+// ---- image uploads ----
+function loadImage(file, cb) {
+  if (!file) return;
+  const r = new FileReader();
+  r.onload = e => { const img = new Image(); img.onload = () => cb(img); img.src = e.target.result; };
+  r.readAsDataURL(file);
+}
+document.getElementById('bg-file').addEventListener('change', e => {
+  loadImage(e.target.files[0], img => { bgImg=img; document.getElementById('bg-zone').classList.add('has-img'); document.getElementById('bg-zone-label').textContent=e.target.files[0].name.slice(0,22); draw(); });
+});
+document.getElementById('bg-clear').addEventListener('click', () => { bgImg=null; document.getElementById('bg-zone').classList.remove('has-img'); document.getElementById('bg-zone-label').textContent='click to load JPG'; document.getElementById('bg-file').value=''; draw(); });
+document.getElementById('bg-opacity').addEventListener('input', e => { bgOpacity=e.target.value/100; document.getElementById('bg-opacity-val').textContent=e.target.value+'%'; draw(); });
+
+document.getElementById('plate-file').addEventListener('change', e => {
+  loadImage(e.target.files[0], img => { plateImg=img; document.getElementById('plate-zone').classList.add('has-img'); document.getElementById('plate-zone-label').textContent=e.target.files[0].name.slice(0,22); draw(); });
+});
+document.getElementById('plate-clear').addEventListener('click', () => { plateImg=null; document.getElementById('plate-zone').classList.remove('has-img'); document.getElementById('plate-zone-label').textContent='click to load PNG'; document.getElementById('plate-file').value=''; draw(); });
+document.getElementById('plate-opacity').addEventListener('input', e => { plateOpacity=e.target.value/100; document.getElementById('plate-opacity-val').textContent=e.target.value+'%'; draw(); });
+
+// ---- mouse ----
+canvas.addEventListener('mousedown', e => {
+  // middle-click or space+click = pan
+  if (e.button === 1 || spaceDown) {
+    panning = true;
+    panStartX = e.clientX; panStartY = e.clientY;
+    panOriginX = panX; panOriginY = panY;
+    canvas.style.cursor = 'grabbing';
+    e.preventDefault();
+    return;
+  }
+
+  const [mx, my] = toCanvas(e);
+  if (inPlate(mx, my)) {
+    dragging = true;
+    dragOffX = mx - px; dragOffY = my - py;
+    canvas.style.cursor = 'grabbing';
+  }
+});
+
+window.addEventListener('mousemove', e => {
+  if (panning) {
+    panX = panOriginX + (e.clientX - panStartX);
+    panY = panOriginY + (e.clientY - panStartY);
+    clampPan();
+    applyTransform();
+    return;
+  }
+  if (dragging) {
+    const [mx, my] = toCanvas(e);
+    px = mx - dragOffX; py = my - dragOffY;
+    if (snapEnabled) { px=snapV(px); py=snapV(py); }
+    clampPlate(); updateReadout(); draw();
+    return;
+  }
+  // hover cursor
+  if (!spaceDown) {
+    const [mx, my] = toCanvas(e);
+    canvas.style.cursor = inPlate(mx, my) ? 'grab' : 'crosshair';
+  }
+});
+
+window.addEventListener('mouseup', e => {
+  if (panning) { panning = false; canvas.style.cursor = spaceDown ? 'grab' : 'crosshair'; }
+  if (dragging) { dragging = false; canvas.style.cursor = 'crosshair'; }
+});
+
+// ---- canvas/solid inputs ----
+function applyCanvasSolid() {
+  const ncw = parseInt(document.getElementById('cw').value)||800;
+  const nch = parseInt(document.getElementById('ch').value)||600;
+  const nsw = Math.max(4, parseInt(document.getElementById('sw').value)||200);
+  const nsh = Math.max(4, parseInt(document.getElementById('sh').value)||150);
+  const reset = ncw!==cw || nch!==ch;
+  cw=ncw; ch=nch; sw=nsw; sh=nsh;
+  if (reset) { px=cw/2; py=ch/2; }
+  clampPlate(); updateReadout(); resetFit();
+}
+['cw','ch','sw','sh'].forEach(id => document.getElementById(id).addEventListener('change', applyCanvasSolid));
+
+// ---- direct position ----
+function applyPosInput() {
+  const npx = parseFloat(document.getElementById('px-in').value);
+  const npy = parseFloat(document.getElementById('py-in').value);
+  if (!isNaN(npx)) px=npx;
+  if (!isNaN(npy)) py=npy;
+  if (snapEnabled) { px=snapV(px); py=snapV(py); }
+  clampPlate(); updateReadout(); draw();
+}
+['px-in','py-in'].forEach(id => {
+  document.getElementById(id).addEventListener('change', applyPosInput);
+  document.getElementById(id).addEventListener('keydown', e => { if(e.key==='Enter') applyPosInput(); });
+});
+
+window.addEventListener('resize', () => { resetFit(); });
+
+// ---- init ----
+px = cw/2; py = ch/2;
+updateReadout();
+// set initial fitScale after layout
+requestAnimationFrame(() => { resetFit(); });
+</script>
+</body>
+</html>

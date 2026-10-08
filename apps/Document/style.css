@@ -1,0 +1,65 @@
+/* =========================================================
+   SETTINGS — colors, fonts, sizes
+   ========================================================= */
+@import url("https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;800&display=swap");
+
+:root {
+  --bg-color:      #161616;
+  --text-color:    #E8ECF2;
+  --muted-color:   #9AA6B8;
+  --accent-color:  #7FB3D5;
+
+  --font-heading:  "Nunito", "Segoe UI", Helvetica, Arial, sans-serif;
+  --font-body:     "Nunito", "Segoe UI", Helvetica, Arial, sans-serif;
+  --size-heading:  2.6rem;
+  --size-subhead:  1.4rem;
+  --size-body:     1.05rem;
+
+  --page-width:    900px;   /* max width of the content */
+  --radius:        6px;     /* image/video corner rounding */
+  --space:         32px;    /* gap between blocks */
+}
+
+/* =========================================================
+   LAYOUT
+   ========================================================= */
+*, *::before, *::after { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--bg-color);
+  color: var(--text-color);
+  font-family: var(--font-body);
+  font-size: var(--size-body);
+  line-height: 1.65;
+}
+
+main { max-width: var(--page-width); margin: 0 auto; padding: 56px 24px 80px; }
+
+h1, h2 { font-family: var(--font-heading); line-height: 1.2; margin: 0 0 16px; }
+h1 { font-size: var(--size-heading); font-weight: 800; }
+h2 { font-size: var(--size-subhead); font-weight: 600; margin-top: calc(var(--space) * 1.5); }
+
+p { max-width: 68ch; margin: 0 0 16px; color: var(--muted-color); }
+p.lead { font-size: 1.2rem; color: var(--text-color); }
+a { color: var(--accent-color); }
+
+figure { margin: var(--space) 0; }
+figure img, figure video {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: var(--radius);
+  background: #000;
+}
+figure video { aspect-ratio: 16 / 9; }
+figcaption { margin-top: 8px; font-size: 0.9rem; color: var(--muted-color); }
+
+/* Two images side by side */
+.pair { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: var(--space) 0; }
+.pair figure { margin: 0; }
+
+@media (max-width: 600px) {
+  :root { --size-heading: 1.9rem; }
+  .pair { grid-template-columns: 1fr; }
+}

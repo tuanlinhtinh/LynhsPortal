@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Math Tools</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        /* Override tab-related styles to show both sections */
+        .main-tabs {
+            display: none;
+        }
+
+        .main-tab-content {
+            display: block !important;
+        }
+
+        .section-title {
+            text-align: center;
+            font-family: var(--font-num);
+            font-weight: 700;
+            font-size: 1.2rem;
+            margin-bottom: 16px;
+            letter-spacing: 0.05em;
+        }
+
+        /* Add a visual divider between sections */
+        #sensor {
+            margin-top: 100px;
+            padding-top: 100px;
+            border-top: 1px solid rgba(0,214,143,0.12);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+
+        <!-- Ratio Section -->
+        <div class="main-tab-content" id="ratio">
+            <div class="section-title">RATIO</div>
+            <div class="content-vertical">
+                <div class="ratio-input-group">
+                    <input type="number" id="ratio-a" oninput="updateRatio('a')" onchange="updateRatio('a')" min="0" class="ratio-input">
+                    <input type="number" id="ratio-b" oninput="updateRatio('b')" onchange="updateRatio('b')" min="0" class="ratio-input">
+                </div>
+                <button class="keep-ratio-btn" id="keep-ratio-btn" onclick="keepRatio()">Keep Ratio</button>
+                <div class="results-box">
+                    <p>Ratio (A/B) = <span id="ratio-result">-</span></p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sensor Calculator Section -->
+        <div class="main-tab-content" id="sensor">
+            <div class="section-title">SENSOR CALCULATOR</div>
+            <div class="content-vertical">
+                <div class="image-section">
+                </div>
+                <div class="calc-section">
+                    <div class="input-group">
+                        <label>Width Pixel:</label>
+                        <input type="number" id="sensor-width-pixel" oninput="calculateSensor()" min="0">
+                        <label>Height Pixel:</label>
+                        <input type="number" id="sensor-height-pixel" oninput="calculateSensor()" min="0">
+                        <label>Pixel Size (µm):</label>
+                        <input type="number" id="sensor-pixel-size" oninput="calculateSensor()" min="0" value="4.4">
+                    </div>
+                    <div class="results-box">
+                        <p>Sensor Length (mm): <span id="sensor-length">-</span></p>
+                        <p>Sensor Height (mm): <span id="sensor-height">-</span></p>
+                        <p>Sensor Diagonal (mm): <span id="sensor-diagonal">-</span></p>
+                        <p>Sensor Ratio: <span id="sensor-ratio">-</span></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>

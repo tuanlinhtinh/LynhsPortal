@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Project</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="content.js"></script>
+</head>
+<body>
+  <main class="wrap">
+    <a class="back" href="index.html">‹ Back to all</a>
+    <h1 id="headline"></h1>
+    <div class="video-box">
+      <video id="video" controls autoplay muted playsinline></video>
+    </div>
+    <p class="body-text" id="body"></p>
+  </main>
+
+  <script>
+    const css = getComputedStyle(document.documentElement);
+    const setting = name => css.getPropertyValue(name).trim().replace(/^["']|["']$/g, "");
+
+    const folder = setting("--media-folder");
+    const video  = setting("--video-file");
+    const image  = setting("--image-file");
+
+    // page.html?id=01  ->  "01"
+    const raw = new URLSearchParams(location.search).get("id") || "01";
+    const id  = raw.padStart(2, "0");
+    const data = CONTENT[id] || {};
+
+    document.getElementById("headline").textContent = data.title || id;
+    document.getElementById("body").textContent = data.text || "";
+    document.title = data.title || id;
+
+    const v = document.getElementById("video");
+    v.poster = `${folder}/${id}/${image}`;
+    v.src    = `${folder}/${id}/${video}`;
+  </script>
+</body>
+</html>

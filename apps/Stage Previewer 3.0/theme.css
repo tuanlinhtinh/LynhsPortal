@@ -1,0 +1,184 @@
+/* ================================================================
+   ENTERSPACE 3D VIEWER — THEME
+   Edit values here to restyle the entire app.
+   Keep this file in the same folder as index.html
+   ================================================================ */
+
+/* ── FONTS ──────────────────────────────────────────────────────── */
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500&family=Syne:wght@400;500;700&display=swap');
+
+:root {
+
+  /* ── TYPEFACES ─────────────────────────────────────────────────── */
+  --font-mono : 'Quicksand', sans-serif;   /* code / UI labels    */
+  --font-sans : 'Syne', sans-serif;           /* logo / headings     */
+
+  /* ── COLOURS ───────────────────────────────────────────────────── */
+  /* Backgrounds */
+  --c-bg          : #141414;   /* viewport & page background         */
+  --c-loading-bg  : #0e0e0f;   /* loading screen background          */
+  --c-panel       : #101012;   /* left panel background               */
+  --c-panel2      : #1a1a1d;   /* item hover / input backgrounds      */
+
+  /* Borders & dividers */
+  --c-border      : #272729;   /* all borders / dividers              */
+
+  /* Text */
+  --c-text        : #e0e0e8;   /* primary text                        */
+  --c-muted       : #7a7a7a;   /* secondary / hint text               */
+
+  /* Accent */
+  --c-accent      : #c8ff6e;   /* highlight, selection, active state  */
+
+  /* Danger (delete hover) */
+  --c-danger      : #ff6e6e;   /* delete button hover colour          */
+  --c-danger-bg   : rgba(255,110,110,0.1); /* delete button hover bg  */
+
+  /* Overlays */
+  --c-status-bg         : rgba(10,10,12,0.9);   /* status toast bg    */
+  --c-drop-overlay-bg   : rgba(200,255,110,0.03);
+  --c-drop-overlay-border: rgba(200,255,110,0.45);
+  --c-videobar-bg-dark  : rgba(6,6,8,0.97);
+  --c-videobar-bg-light : rgba(6,6,8,0.65);
+  --c-scrubber-track    : rgba(255,255,255,0.1);
+  --c-vol-track         : rgba(255,255,255,0.15);
+  --c-tex-label-bg      : rgba(0,0,0,0.75);
+  --c-tex-badge-bg      : rgba(0,0,0,0.85);
+  --c-tex-del-bg        : rgba(0,0,0,0.7);
+  --c-watermark         : rgba(255,255,255,0.18);
+  --c-hdri-hint         : rgba(255,255,255,0.15);
+  --c-videobar-border   : rgba(255,255,255,0.05);
+
+  /* Accent tints (derived from --c-accent, keep in sync if you change it) */
+  --c-accent-sel-bg     : rgba(200,255,110,0.07);
+  --c-accent-sel-border : rgba(200,255,110,0.28);
+  --c-accent-btn-border : rgba(200,255,110,0.4);
+  --c-vbar-btn-bg       : rgba(200,255,110,0.08);
+  --c-vbar-btn-border   : rgba(200,255,110,0.25);
+  --c-vbar-btn-hover    : rgba(200,255,110,0.2);
+  --c-scrubber-glow     : rgba(200,255,110,0.5);
+  --c-drop-border-accent: rgba(200,255,110,0.45);
+
+  /* Default mesh colour (used by color-swatch initial state) */
+  --c-default-mesh      : #404044;
+
+  /* Scrollbar */
+  --c-scrollbar-thumb   : var(--c-border);
+
+  /* ── FONT SIZES ────────────────────────────────────────────────── */
+  --fs-logo         : 12px;   /* panel logo                          */
+  --fs-logo-loading : 18px;   /* loading screen logo                 */
+  --fs-zone-title   : 11px;    /* zone section labels (OBJECTS etc.)  */
+  --fs-obj-item     : 11px;   /* object list item name               */
+  --fs-import-btn   : 8px;    /* + IMPORT button                     */
+  --fs-action-btn   : 10px;   /* CHANGE COLOR / CAPTURE buttons      */
+  --fs-item-del     : 11px;   /* ✕ delete button on obj items        */
+  --fs-tex-label    : 7px;    /* texture thumbnail name label        */
+  --fs-tex-badge    : 6px;    /* MP4 type badge                      */
+  --fs-tex-del      : 11px;   /* ✕ delete button on tex thumbs       */
+  --fs-drop-msg     : 16px;   /* "DROP FILES HERE" large text        */
+  --fs-drop-sub     : 11px;   /* ".obj · .jpg…" subtitle in drop msg */
+  --fs-watermark    : 10px;   /* bottom-right watermark              */
+  --fs-hdri-hint    : 9px;    /* top viewport hint text              */
+  --fs-status       : 10px;   /* status toast                        */
+  --fs-loading-msg  : 9px;    /* loading screen sub-text             */
+  --fs-video-name   : 9px;    /* video name in playbar               */
+  --fs-time-display : 9px;    /* time counter in playbar             */
+  --fs-empty-hint   : 11px;    /* empty state hints                   */
+
+  /* ── LETTER SPACING ────────────────────────────────────────────── */
+  --ls-logo         : 0.08em;
+  --ls-logo-loading : 0.1em;
+  --ls-zone-title   : 0.18em;
+  --ls-import-btn   : 0.1em;
+  --ls-action-btn   : 0.1em;
+  --ls-drop-msg     : 0.1em;
+  --ls-watermark    : 0.06em;
+  --ls-hdri-hint    : 0.1em;
+  --ls-loading-msg  : 0.12em;
+
+  /* ── ICON SIZES ─────────────────────────────────────────────────── */
+  --icon-obj          : 14px;   /* mesh icon in object list           */
+  --icon-action-btn   : 12px;   /* icon inside CAPTURE button         */
+  --icon-vbar-btn     : 28px;   /* play/mute button circle diameter   */
+  --icon-play-w       : 10px;   /* play triangle SVG width            */
+  --icon-play-h       : 12px;   /* play triangle SVG height           */
+  --icon-vol-w        : 12px;   /* volume icon width                  */
+  --icon-vol-h        : 12px;   /* volume icon height                 */
+  --icon-color-swatch : 13px;   /* color swatch circle diameter       */
+
+  /* ── LAYOUT & SPACING ──────────────────────────────────────────── */
+  --panel-width         : 220px;  /* left panel width                 */
+  --panel-header-pad    : 13px 16px 11px;
+  --zone-title-pad      : 9px 16px 5px;
+  --zone-list-pad       : 3px 8px;
+  --obj-item-pad        : 5px 6px 5px 8px;
+  --obj-item-gap        : 6px;
+  --btn-zone-pad        : 11px;
+  --btn-zone-gap        : 7px;
+  --action-btn-pad      : 7px 11px;
+  --import-btn-pad      : 3px 7px;
+  --tex-grid-gap        : 5px;
+  --tex-grid-pad        : 4px 8px 8px;
+  --tex-grid-columns    : 3;      /* thumbnails per row                */
+  --videobar-height     : 54px;
+  --videobar-pad        : 0 16px;
+  --videobar-gap        : 10px;
+  --scrubber-height     : 20px;
+  --scrubber-track-h    : 3px;    /* resting track thickness           */
+  --scrubber-track-h-hov: 5px;    /* hovered track thickness           */
+  --scrubber-thumb-size : 11px;
+  --vol-slider-width    : 52px;
+  --vol-slider-h        : 3px;
+  --vol-slider-thumb    : 10px;
+  --loading-bar-width   : 200px;
+  --loading-bar-height  : 2px;
+  --watermark-bottom    : 62px;
+  --watermark-right     : 16px;
+  --status-bottom       : 70px;
+  --video-name-maxw     : 80px;
+  --time-display-minw   : 70px;
+
+  /* ── BORDER RADII ───────────────────────────────────────────────── */
+  --r-item       : 4px;    /* list items, buttons, thumbnails         */
+  --r-import-btn : 3px;
+  --r-status     : 20px;   /* pill shape for status toast             */
+  --r-vbar-btn   : 50%;    /* full circle                             */
+  --r-scrubber   : 2px;
+  --r-loading-bar: 1px;
+  --r-color-swatch: 50%;
+
+  /* ── BORDER WIDTHS ──────────────────────────────────────────────── */
+  --bw-standard  : 1px;
+  --bw-tex-thumb : 1.5px;
+  --bw-drop      : 2px;
+
+  /* ── OPACITY ────────────────────────────────────────────────────── */
+  --opacity-obj-icon         : 0.4;
+  --opacity-obj-icon-selected: 1;
+  --opacity-drop-sub         : 0.55;
+
+  /* ── TRANSITIONS ────────────────────────────────────────────────── */
+  --tr-fast    : 0.1s;
+  --tr-medium  : 0.12s;
+  --tr-status  : 0.28s;
+  --tr-videobar: 0.22s;
+  --tr-loading : 1s;
+
+  /* ── ZONE FLEX RATIOS ───────────────────────────────────────────── */
+  --zone-object-flex : 1;   /* object zone relative height            */
+  --zone-texture-flex: 2;   /* texture zone relative height (bigger)  */
+
+  /* ── 3D SCENE ───────────────────────────────────────────────────── */
+  --scene-bg            : #080808;  /* Three.js scene background       */
+  --camera-fov          : 80;       /* degrees (40 ≈ 50mm equiv)       */
+  --camera-near         : 0.01;
+  --camera-far          : 1000;
+  --shadow-map-size     : 2048;     /* shadow map resolution (px²)     */
+  --tone-mapping-exposure: 1.0;
+  --ambient-intensity   : 0.55;
+  --sun-intensity       : 1.8;
+  --fill-intensity      : 0.4;
+  --rim-intensity       : 0.25;
+  --video-fps-cap       : 30;       /* fallback frame-update rate       */
+}

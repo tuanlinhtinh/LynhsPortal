@@ -1,0 +1,119 @@
+/* ══════════════════════════════════════════════════════
+   theme.css  –  Edit this file to change the whole portal
+   ══════════════════════════════════════════════════════ */
+
+:root {
+
+  /* ── Fonts ─────────────────────────────────────────── */
+  /* Import from Google Fonts or use system fonts        */
+  --font-display : 'Nunito', 'Helvetica Neue', sans-serif;
+  --font-body    : 'Nunito', 'Helvetica Neue', sans-serif;
+
+  /* ── Font sizes ─────────────────────────────────────── */
+  --size-title    : 2.8rem;
+  --size-subtitle : 0.8rem;
+  --size-label    : 1.05rem;
+  --size-desc     : 0.82rem;
+
+  /* ── Colors ─────────────────────────────────────────── */
+  --bg            : #0f0f0f;          /* page background         */
+  --text          : #e8f0eb;          /* default text            */
+  --text-muted    : #4b4b4b;          /* header subtitle, footer */
+  --accent        : #5c2897;          /* title / brand color     */
+
+  /* ── Cards ──────────────────────────────────────────── */
+  --card-bg            : #0a0a0a;
+  --card-border        : 1px solid #292929;
+  --card-shadow        : 0 2px 16px rgba(0,0,0,.35);
+  --card-shadow-hover  : 0 12px 40px rgba(0, 0, 0, 0.18);
+  --card-hover-overlay : linear-gradient(135deg, rgba(89, 0, 255, 0.3), rgba(106, 91, 238, 0.02));
+  --card-label-color   : #e9f0e8;
+  --card-desc-color    : #847a90;
+  --card-padding       : 2.2rem 1.5rem;
+  --card-min-height    : 160px;
+
+  /* ── Grid ───────────────────────────────────────────── */
+  --cols       : 4;        /* columns on desktop; auto-collapses on mobile */
+  --gap        : 1.25rem;
+  --max-width  : 1200px;
+
+  /* ── Icons / Images ─────────────────────────────────── */
+  --icon-size  : 2.6rem;
+  --img-size   : 56px;
+
+  /* ── Spacing ─────────────────────────────────────────── */
+  --space-md   : 1.5rem;
+  --space-xl   : 3rem;
+
+  /* ── Corners ─────────────────────────────────────────── */
+  --radius     : 14px;
+}
+
+
+/* ══════════════════════════════════════════════════════
+   PRESET THEMES  –  Uncomment one block to apply it
+   ══════════════════════════════════════════════════════
+
+── LIGHT / CLEAN ─────────────────────────────────────
+:root {
+  --bg                 : #f4f5f7;
+  --text               : #1a1d27;
+  --text-muted         : #8a93a8;
+  --accent             : #3b6ef0;
+  --card-bg            : #ffffff;
+  --card-border        : 1px solid #e2e5ef;
+  --card-shadow        : 0 2px 12px rgba(0,0,0,.07);
+  --card-shadow-hover  : 0 10px 32px rgba(59,110,240,.14);
+  --card-hover-overlay : linear-gradient(135deg, rgba(59,110,240,.06), transparent);
+  --card-label-color   : #1a1d27;
+  --card-desc-color    : #8a93a8;
+}
+
+── WARM PAPER ────────────────────────────────────────
+:root {
+  --bg                 : #fdf6ec;
+  --text               : #2d2219;
+  --text-muted         : #a08060;
+  --accent             : #c0622a;
+  --card-bg            : #fff9f0;
+  --card-border        : 1px solid #e8d9c5;
+  --card-shadow        : 0 2px 10px rgba(80,40,10,.08);
+  --card-shadow-hover  : 0 10px 30px rgba(192,98,42,.14);
+  --card-hover-overlay : linear-gradient(135deg, rgba(192,98,42,.07), transparent);
+  --card-label-color   : #2d2219;
+  --card-desc-color    : #a08060;
+  --font-display       : Georgia, serif;
+}
+
+── DEEP OCEAN ────────────────────────────────────────
+:root {
+  --bg                 : #050e1c;
+  --text               : #c8dff7;
+  --text-muted         : #4a6580;
+  --accent             : #38bdf8;
+  --card-bg            : #0a1929;
+  --card-border        : 1px solid #112240;
+  --card-shadow        : 0 2px 18px rgba(0,0,0,.5);
+  --card-shadow-hover  : 0 12px 40px rgba(56,189,248,.2);
+  --card-hover-overlay : linear-gradient(135deg, rgba(56,189,248,.1), transparent);
+  --card-label-color   : #c8dff7;
+  --card-desc-color    : #4a6580;
+}
+
+── HIGH CONTRAST / ACCESSIBLE ───────────────────────
+:root {
+  --bg                 : #000000;
+  --text               : #ffffff;
+  --text-muted         : #aaaaaa;
+  --accent             : #ffdd00;
+  --card-bg            : #111111;
+  --card-border        : 2px solid #444444;
+  --card-shadow        : none;
+  --card-shadow-hover  : 0 0 0 3px #ffdd00;
+  --card-hover-overlay : none;
+  --card-label-color   : #ffffff;
+  --card-desc-color    : #aaaaaa;
+  --radius             : 4px;
+}
+
+══════════════════════════════════════════════════════ */

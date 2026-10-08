@@ -1,0 +1,140 @@
+:root {
+    --bg:       #07090d;
+    --surface:  #0e1318;
+    --card:     #131920;
+    --border:   #1c2635;
+    --border-hi:#2a3a50;
+    --accent:   #00d68f;
+    --accent-d: #00a870;
+    --accent-glow: rgba(0,214,143,0.12);
+    --text:     #c8d6e5;
+    --muted:    #4e6070;
+    --font-num: 'JetBrains Mono', monospace;
+}
+
+body {
+    background-color: var(--bg);
+    color: var(--text);
+    font-family: var(--font-num);
+    margin: 0;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    -webkit-font-smoothing: antialiased;
+}
+
+.container {
+    max-width: 1200px;
+    width: 100%;
+}
+
+.main-tabs {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin-bottom: 20px; /* Tăng khoảng cách để dời giao diện xuống */
+}
+
+.content-vertical {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+
+.calc-section {
+    text-align: center;
+}
+
+.input-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 25px;
+    margin-bottom: 20px;
+    justify-content: center;
+}
+
+.input-group label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.input-group input {
+    width: 80px;
+    padding: 8px;
+    border-radius: 4px;
+    background-color: var(--accent-glow);
+    color: var(--text);
+    border: 1px solid #259774;
+    font-family: var(--font-num);
+    text-align: center;
+    -webkit-appearance: none;
+    appearance: none;
+}
+
+.input-group input::-webkit-inner-spin-button,
+.input-group input::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.ratio-input-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-bottom: 20px;
+    justify-content: center;
+}
+
+.ratio-input {
+    width: 200px;
+    height: 60px;
+    padding: 8px;
+    border-radius: 4px;
+    background-color: var(--accent-glow);
+    color: var(--text);
+    border: 1px solid #259774;
+    font-size: 2rem;
+    font-weight: bold;
+    text-align: center;
+    -webkit-appearance: none;
+    appearance: none;
+}
+
+.ratio-input::-webkit-inner-spin-button,
+.ratio-input::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.keep-ratio-btn {
+    padding: 10px 20px;
+    background-color: #172a30;
+    border: none;
+    border-radius: 4px;
+    color: var(--text);
+    cursor: pointer;
+    font-weight: bold;
+    margin-bottom: 20px;
+    font-family: var(--font-num);
+}
+
+.keep-ratio-btn.active {
+    background-color: var(--accent);
+    color: var(--muted);
+}
+
+.results-box {
+    border: 2px solid #259774;
+    border-radius: 4px;
+    padding: 10px;
+    text-align: center;
+}
+
+.results-box p {
+    margin: 10px 0;
+    color: #259774;
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
