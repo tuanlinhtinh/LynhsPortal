@@ -10,6 +10,7 @@ css/config.css    ← settings: grid, fonts, colors, sizes, lines, thumbnail cou
 css/content.css   ← all the text: headline, intro, each thumbnail's paragraphs
 css/style.css     ← layout (reads config.css)
 js/main.js        ← builds thumbnails and the pop-up
+fonts/            ← Be Vietnam Pro (Vietnamese + Latin), bundled so every device matches
 content/
   01/             ← media for thumbnail 1
     thumbnail.jpg ← card image (optional; without it the card is a plain grey box)
@@ -54,3 +55,14 @@ them in its content.css block:
 
 Export video as H.264 MP4 or WebM so every browser can play it. A missing
 file shows an empty slot that says which file to add.
+
+## Font
+
+Be Vietnam Pro (weights 300, 400, 600, 700) is bundled in `fonts/` and loaded
+by the `@font-face` rules at the top of `css/config.css`. Because the page
+carries its own font, macOS, iOS, Windows and Android all show the same
+letters, offline too. It's free under the SIL Open Font License (`fonts/OFL.txt`).
+
+To use another font, drop its `.woff2` files in `fonts/`, update the `src`
+paths and family name in those `@font-face` rules, and change `--font-heading`
+and `--font-body`. Check that the font includes Vietnamese before switching.

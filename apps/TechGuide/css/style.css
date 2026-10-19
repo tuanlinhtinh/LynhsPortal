@@ -80,7 +80,7 @@ video {
   font-size: var(--headline-size);
   font-weight: var(--headline-weight);
   letter-spacing: var(--headline-tracking);
-  line-height: 0.95;
+  line-height: var(--headline-line-height);
   color: var(--color-heading);
   overflow-wrap: break-word;
 }
@@ -90,11 +90,11 @@ video {
 }
 
 .block-heading {
-  margin: 0 0 0.1em;
+  margin: 0 0 0.15em;
   font-family: var(--font-heading);
   font-size: var(--heading-size);
   font-weight: var(--heading-weight);
-  line-height: 1.2;
+  line-height: 1.4;
   color: var(--color-heading);
 }
 
@@ -228,14 +228,14 @@ video {
 .thumb-title {
   font-size: var(--thumb-title-size);
   font-weight: 400;
-  line-height: 1.25;
+  line-height: 1.5; /* tall enough that stacked accents aren't clipped */
   color: var(--color-heading);
 }
 
 .thumb-sub {
   max-height: 0;
   font-size: var(--thumb-sub-size);
-  line-height: 1.4;
+  line-height: 1.5;
   color: rgb(255 255 255 / 0.72);
   opacity: 0;
   transform: translateY(0.5em);
@@ -269,7 +269,7 @@ video {
 }
 
 .thumb.is-active .thumb-sub {
-  max-height: 1.5em;
+  max-height: 1.6em;
   opacity: 1;
   transform: none;
 }
@@ -294,7 +294,7 @@ video {
   }
 
   .thumb:is(:hover, :focus-visible) .thumb-sub {
-    max-height: 1.5em;
+    max-height: 1.6em;
     opacity: 1;
     transform: none;
   }
@@ -476,7 +476,7 @@ video {
   font-family: var(--font-heading);
   font-size: clamp(1.6rem, 1rem + 2vw, 2.5rem);
   font-weight: 300;
-  line-height: 1;
+  line-height: 1.2;
 }
 
 .media-empty span {

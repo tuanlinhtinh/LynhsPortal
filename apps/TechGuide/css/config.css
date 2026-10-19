@@ -3,9 +3,41 @@
    style.css reads every value below; main.js reads the ones marked [JS].
    ========================================================================== */
 
-/* Fonts: swap the URL and the --font-* stacks together.
-   (Century Gothic users: put "Century Gothic" first in the stacks.) */
-@import url("https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500;600&display=swap");
+/* ---- Fonts --------------------------------------------------------------
+   Be Vietnam Pro, bundled in /fonts so every device (macOS, iOS, Windows,
+   Android) draws the same letters, offline too. Full Vietnamese support.
+   To use another font: put its .woff2 files in /fonts, point the src lines
+   below at them, and change the family name here and in --font-* below.
+   Available weights: 300, 400, 600, 700.
+   ------------------------------------------------------------------------- */
+@font-face {
+  font-family: "Be Vietnam Pro";
+  src: url("../fonts/BeVietnamPro-Light.woff2") format("woff2");
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Be Vietnam Pro";
+  src: url("../fonts/BeVietnamPro-Regular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Be Vietnam Pro";
+  src: url("../fonts/BeVietnamPro-SemiBold.woff2") format("woff2");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Be Vietnam Pro";
+  src: url("../fonts/BeVietnamPro-Bold.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
 
 :root {
   /* ---- Content ------------------------------------------------------- */
@@ -41,19 +73,20 @@
   --color-focus: #ffffff;
 
   /* ---- Typography ---------------------------------------------------- */
-  --font-heading: "Montserrat", system-ui, sans-serif;
-  --font-body:  "Montserrat", system-ui, sans-serif;
+  --font-heading: "Be Vietnam Pro", system-ui, sans-serif;
+  --font-body: "Be Vietnam Pro", system-ui, sans-serif;
   --headline-size: clamp(2.5rem, 1.4rem + 6.6vw, 5.6rem);
   --headline-weight: 700;
-  --headline-tracking: 0.03em;
-  --heading-size: 1.3rem;            /* "Paragraph 0:" style headings */
+  --headline-tracking: 0.02em;
+  --headline-line-height: 1.12;      /* room for stacked marks: Ấ Ể Ỗ */
+  --heading-size: 1.2rem;            /* "Paragraph 0:" style headings */
   --heading-weight: 600;
-  --body-size: clamp(1rem, 0.94rem + 0.3vw, 1.2rem);
+  --body-size: clamp(0.98rem, 0.93rem + 0.25vw, 1.1rem);
   --body-weight: 400;
-  --body-line-height: 1.32;
+  --body-line-height: 1.55;          /* Vietnamese needs more than Latin-only text */
   --text-measure: 100%;              /* max line length of paragraphs, e.g. 65ch */
-  --thumb-title-size: 1.15rem;
-  --thumb-sub-size: 0.85rem;
+  --thumb-title-size: 1.05rem;
+  --thumb-sub-size: 0.8rem;
 
   /* ---- Layout -------------------------------------------------------- */
   --content-width: 58.5rem;          /* width of headline, thumbnails and pop-up */
