@@ -41,7 +41,7 @@
   --color-focus: #ffffff;
 
   /* ---- Typography ---------------------------------------------------- */
-  --font-heading: "DM Sans", "Futura", system-ui, sans-serif;
+  --font-heading: "Google Sans", "Futura", system-ui, sans-serif;
   --font-body:  "Century Gothic", "Futura", system-ui, sans-serif;
   --headline-size: clamp(2.5rem, 1.4rem + 6.6vw, 5.6rem);
   --headline-weight: 700;
