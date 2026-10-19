@@ -41,10 +41,10 @@
   --color-focus: #ffffff;
 
   /* ---- Typography ---------------------------------------------------- */
-  --font-heading: "Century Gothic", "Futura", system-ui, sans-serif;
+  --font-heading: "DM Sans", "Futura", system-ui, sans-serif;
   --font-body:  "Century Gothic", "Futura", system-ui, sans-serif;
   --headline-size: clamp(2.5rem, 1.4rem + 6.6vw, 5.6rem);
-  --headline-weight: 600;
+  --headline-weight: 700;
   --headline-tracking: 0.03em;
   --heading-size: 1.3rem;            /* "Paragraph 0:" style headings */
   --heading-weight: 600;
