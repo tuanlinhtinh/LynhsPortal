@@ -41,8 +41,8 @@
   --color-focus: #ffffff;
 
   /* ---- Typography ---------------------------------------------------- */
-  --font-heading: "Google Sans", "Futura", system-ui, sans-serif;
-  --font-body:  "Century Gothic", "Futura", system-ui, sans-serif;
+  --font-heading: "Montserrat", system-ui, sans-serif;
+  --font-body:  "Montserrat", system-ui, sans-serif;
   --headline-size: clamp(2.5rem, 1.4rem + 6.6vw, 5.6rem);
   --headline-weight: 700;
   --headline-tracking: 0.03em;
