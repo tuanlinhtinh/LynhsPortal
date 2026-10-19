@@ -1,0 +1,87 @@
+/* ==========================================================================
+   CONTENT — all the text on the page. Edit freely, then refresh.
+
+   Rules:
+   • Every value is in quotes:  --title: "My title";
+   • --text takes one quoted string per paragraph:
+         --text: "First paragraph."
+                 "Second paragraph.";
+   • Keep each paragraph on one line (long lines are fine).
+     Need a line break inside a paragraph? Write \A  →  "Line one\A Line two"
+   • A quote inside the text needs a backslash:  "She said \"hi\""
+   • Leave a property out and the page uses a default (or hides it).
+
+   Images and videos are NOT set here — they stay in content/01, content/02 …
+   (thumbnail.jpg, media-1.jpg, media-2.mp4 …). Optional overrides:
+         --thumbnail: "cover.png";
+         --media: "walkthrough.mp4" "before.jpg" "after.jpg";
+   ========================================================================== */
+
+
+/* ---- Headline + intro ---------------------------------------------------- */
+.hero {
+  --title: "Quy trình Gửi & Nhận files";
+  --heading: "Khi làm việc chung với nhiều bên, sẽ cần trao đổi Files qua lại, cần những lưu ý sau:";          /* remove to hide */
+  --text: "- ES Team sử dụng các phần mềm dưới đây. Vui lòng đọc kĩ những yêu cầu khi xuất và nhận files"
+			"- Khi nhận file FBX hoặc C4D, ES Team sẽ cần thêm thời gian để xử lý và shading, lookdev lại."
+			"- Yêu cầu các bên gửi hình Rendered để team tiện so sánh (Vì khác phần mềm nên kết quả sẽ có chút khác biệt <=15%)";
+}
+
+
+/* ---- Thumbnails ----------------------------------------------------------
+   One block per thumbnail. "01" matches folder content/01.
+   Adding thumbnails: raise --thumb-count in config.css, copy a block,
+   change the number, and create the matching folder.
+
+   --title     card label (default: "Thumbnail N")
+   --subtitle  appears on hover
+   --heading   pop-up heading (default: the title)
+   --text      pop-up paragraphs
+   ------------------------------------------------------------------------- */
+
+[data-thumb="01"] {
+  --title: "Blender";
+  --subtitle: "";
+  --heading: "Blender 5.0 trở lên";
+  --text: "- Khi xuất/nhận files, yêu cầu Pack Resources, Pack Linked Libraries, cũng như các Textures/Cache/Add-on(nếu có)"
+			"- Đảm bảo đã setting Render đúng yêu cầu/mục đích sản phẩm";
+}
+
+[data-thumb="02"] {
+  --title: "FBX";
+  --subtitle: "";
+  --heading: "Export FBX";
+  --text: "- Khi export FBX, ưu tiên phiên bản mới nhất (nếu export từ Blender, khuyên dùng Add-on BetterFBX)"
+			"- Lưu ý check đủ các tùy chọn (UV,Material, Animation,...). Đảm bảo file mở lên không thiếu hoặc mất link Textures";
+}
+
+[data-thumb="03"] {
+  --title: "Cinema 4d";
+  --subtitle: "";
+  --heading: "Cinema 4D";
+  --text: "- Khi xuất/nhận file, yêu cầu Save Project with Assets (tự động collect) hoặc collect các Assets sử dụng đi kèm"
+			"- Ưu tiên sử dụng Redshift Renderer";
+}
+
+[data-thumb="04"] {
+  --title: "Unreal Engine";
+  --subtitle: "";
+  --heading: "Unreal Engine 5.6 - 5.8";
+  --text: "Khi xuất/nhận files, yêu cầu pack đủ Assets và Plugins liên quan";
+}
+
+[data-thumb="05"] {
+  --title: "SketchUp";
+  --subtitle: "";
+  --heading: "SketchUp";
+  --text: "ES Team có thể nhận, mở và export. (thường nhận file thiết kế sân khấu, export ra FBX để tái sử dụng)";
+}
+
+[data-thumb="06"] {
+  --title: "Photoshop";
+  --subtitle: "";
+  --heading: "Photoshop";
+  --text: "Khi nhận/gửi file, yêu cầu pack đủ các assets đi kèm"
+			"- Nếu assets dùng Adobe cloud, vui lòng Rasterize"
+			"- Đính kèm Folder các file Illustrator (*.ai) nếu có sử dụng Smart object)";
+}

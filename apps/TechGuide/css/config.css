@@ -1,0 +1,126 @@
+/* ==========================================================================
+   CONFIG — edit this file to restyle the page.
+   style.css reads every value below; main.js reads the ones marked [JS].
+   ========================================================================== */
+
+/* Fonts: swap the URL and the --font-* stacks together.
+   (Century Gothic users: put "Century Gothic" first in the stacks.) */
+@import url("https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500;600&display=swap");
+
+:root {
+  /* ---- Content ------------------------------------------------------- */
+  --thumb-count: 6;                  /* [JS] how many thumbnails → text from content.css, media from content/01 … */
+  --content-folder: "content";       /* [JS] root folder that holds 00, 01, 02 … */
+  --folder-digits: 2;                /* [JS] 2 → "01", 3 → "001" */
+  --thumb-file: "thumbnail";         /* [JS] thumbnail image name, any image extension */
+  --media-file-prefix: "media-";     /* [JS] media-1.jpg, media-2.mp4 … */
+  --media-slots: 2;                  /* [JS] image/video slots in each pop-up */
+  --video-autoplay: 1;               /* [JS] 1 = play muted + looped when opened, 0 = wait for click */
+  --video-controls: 1;               /* [JS] 1 = show native video controls */
+
+  /* ---- Grid background ----------------------------------------------- */
+  --grid-size: 46px;                 /* cell size */
+  --grid-line-width: 1px;
+  --grid-line-color: 255 255 255;    /* R G B, no commas */
+  --grid-line-opacity: 0.035;
+  --grid-dot-size: 1.25px;           /* dots at every intersection, 0px to hide */
+  --grid-dot-opacity: 0.16;
+
+  /* ---- Colors -------------------------------------------------------- */
+  --color-bg: #1d1d1d;
+  --color-text: #dedede;
+  --color-heading: #f0f0f0;
+  --color-muted: #9a9a9a;
+  --color-thumb-bg: #3a3a3a;
+  --color-thumb-border: #a8a8a8;
+  --color-thumb-border-active: #f0f0f0;
+  --color-panel-bg: rgb(30 30 30 / 0.94);
+  --color-panel-border: #cfcfcf;
+  --color-media-bg: #e4e4e4;
+  --color-media-text: #2b2b2b;
+  --color-focus: #ffffff;
+
+  /* ---- Typography ---------------------------------------------------- */
+  --font-heading: "Century Gothic", "Futura", system-ui, sans-serif;
+  --font-body:  "Century Gothic", "Futura", system-ui, sans-serif;
+  --headline-size: clamp(2.5rem, 1.4rem + 6.6vw, 5.6rem);
+  --headline-weight: 600;
+  --headline-tracking: 0.03em;
+  --heading-size: 1.3rem;            /* "Paragraph 0:" style headings */
+  --heading-weight: 600;
+  --body-size: clamp(1rem, 0.94rem + 0.3vw, 1.2rem);
+  --body-weight: 400;
+  --body-line-height: 1.32;
+  --text-measure: 100%;              /* max line length of paragraphs, e.g. 65ch */
+  --thumb-title-size: 1.15rem;
+  --thumb-sub-size: 0.85rem;
+
+  /* ---- Layout -------------------------------------------------------- */
+  --content-width: 58.5rem;          /* width of headline, thumbnails and pop-up */
+  --page-padding-x: clamp(1.25rem, 5vw, 3rem);
+  --page-padding-top: clamp(3rem, 7vw, 5.5rem);
+  --page-padding-bottom: clamp(3rem, 7vw, 6rem);
+  --headline-gap: clamp(2rem, 5vw, 4.5rem);   /* headline → paragraph */
+  --section-gap: clamp(2.5rem, 6vw, 4rem);    /* paragraph → thumbnails */
+
+  /* ---- Thumbnails ---------------------------------------------------- */
+  --thumb-columns: 4;                /* [JS] per row; see breakpoints below */
+  --thumb-height: 9.25rem;
+  --thumb-gap-x: 2rem;
+  --thumb-gap-y: 1.5rem;
+  --thumb-radius: 8px;
+  --thumb-border-width: 1px;
+  --thumb-grayscale: 1;              /* resting image: 1 = black & white, 0 = color */
+  --thumb-brightness: 0.72;          /* resting image brightness */
+
+  /* ---- Hover effect -------------------------------------------------- */
+  --hover-grow: 1.75;                /* hovered card width vs. its neighbours (1 = off) */
+  --hover-zoom: 1.08;                /* image zoom on hover */
+  --hover-dim: 0.55;                 /* opacity of the cards you are NOT hovering */
+  --hover-blur: 10px;                /* frosted band behind the title */
+
+  /* ---- Connector line ------------------------------------------------ */
+  --line-width: 1px;
+  --line-color: #cfcfcf;
+  --connector-length: 5.4rem;        /* thumbnail bottom → pop-up top */
+
+  /* ---- Pop-up -------------------------------------------------------- */
+  --panel-radius: 8px;
+  --panel-border-width: 1px;
+  --panel-padding: 2.25rem;
+  --panel-text-gap: 3rem;            /* paragraph → media grid */
+
+  /* ---- Media grid ---------------------------------------------------- */
+  --media-columns: 2;
+  --media-gap: 1.3rem;
+  --media-radius: 8px;
+  --media-aspect: 423 / 487;         /* width / height of each slot */
+
+  /* ---- Motion -------------------------------------------------------- */
+  --ease: cubic-bezier(0.22, 0.8, 0.24, 1);
+  --dur-hover: 600ms;
+  --dur-panel: 650ms;
+  --dur-line: 260ms;
+}
+
+/* ---- Breakpoints -------------------------------------------------------- */
+@media (max-width: 860px) {
+  :root {
+    --thumb-columns: 2;
+    --thumb-gap-x: 1.25rem;
+    --thumb-gap-y: 1.25rem;
+    --thumb-height: 8.5rem;
+    --connector-length: 3rem;
+    --panel-padding: 1.5rem;
+    --panel-text-gap: 2rem;
+  }
+}
+
+@media (max-width: 520px) {
+  :root {
+    --media-columns: 1;
+    --thumb-height: 7.5rem;
+    --panel-padding: 1.15rem;
+    --media-gap: 1rem;
+  }
+}

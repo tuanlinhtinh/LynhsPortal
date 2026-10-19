@@ -1,0 +1,496 @@
+/* ==========================================================================
+   STYLE — layout and components. Values live in config.css.
+   ========================================================================== */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  color-scheme: dark;
+  background-color: var(--color-bg);
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: var(--font-body);
+  font-size: var(--body-size);
+  font-weight: var(--body-weight);
+  line-height: var(--body-line-height);
+  color: var(--color-text);
+  background-color: var(--color-bg);
+
+  /* Grid background: intersection dots + vertical lines + horizontal lines */
+  background-image:
+    radial-gradient(
+      circle at center,
+      rgb(var(--grid-line-color) / var(--grid-dot-opacity)) var(--grid-dot-size),
+      transparent calc(var(--grid-dot-size) + 0.75px)
+    ),
+    linear-gradient(
+      to right,
+      rgb(var(--grid-line-color) / var(--grid-line-opacity)) var(--grid-line-width),
+      transparent var(--grid-line-width)
+    ),
+    linear-gradient(
+      to bottom,
+      rgb(var(--grid-line-color) / var(--grid-line-opacity)) var(--grid-line-width),
+      transparent var(--grid-line-width)
+    );
+  background-size: var(--grid-size) var(--grid-size);
+  background-position:
+    calc(var(--grid-size) / -2) calc(var(--grid-size) / -2),
+    0 0,
+    0 0;
+}
+
+img,
+video {
+  max-width: 100%;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ---- Page ------------------------------------------------------------- */
+.page {
+  width: min(var(--content-width), 100% - var(--page-padding-x) * 2);
+  margin-inline: auto;
+  padding-top: var(--page-padding-top);
+  padding-bottom: var(--page-padding-bottom);
+}
+
+/* ---- Hero ------------------------------------------------------------- */
+.headline {
+  margin: 0;
+  font-family: var(--font-heading);
+  font-size: var(--headline-size);
+  font-weight: var(--headline-weight);
+  letter-spacing: var(--headline-tracking);
+  line-height: 0.95;
+  color: var(--color-heading);
+  overflow-wrap: break-word;
+}
+
+.intro {
+  margin-top: var(--headline-gap);
+}
+
+.block-heading {
+  margin: 0 0 0.1em;
+  font-family: var(--font-heading);
+  font-size: var(--heading-size);
+  font-weight: var(--heading-weight);
+  line-height: 1.2;
+  color: var(--color-heading);
+}
+
+.prose p {
+  margin: 0;
+  max-width: var(--text-measure);
+  white-space: pre-line; /* lets \A in content.css break a line */
+}
+
+.prose p + p {
+  margin-top: 0.8em;
+}
+
+/* ---- Thumbnails ------------------------------------------------------- */
+.thumbs {
+  margin-top: var(--section-gap);
+}
+
+.thumb-row {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  gap: var(--thumb-gap-x);
+  height: var(--thumb-height);
+}
+
+.thumb-row + .thumb-row,
+.panel-slot + .thumb-row {
+  margin-top: var(--thumb-gap-y);
+}
+
+.thumb,
+.thumb-filler {
+  flex: 1 1 0;
+  min-width: 0;
+}
+
+.thumb {
+  position: relative;
+  display: block;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition:
+    flex-grow var(--dur-hover) var(--ease),
+    opacity var(--dur-hover) var(--ease);
+}
+
+.thumb:focus {
+  outline: none;
+}
+
+.thumb-frame {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  isolation: isolate;
+  border: var(--thumb-border-width) solid var(--color-thumb-border);
+  border-radius: var(--thumb-radius);
+  background: var(--color-thumb-bg);
+  transition: border-color var(--dur-hover) var(--ease);
+}
+
+.thumb:focus-visible .thumb-frame {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 3px;
+}
+
+.thumb.is-active .thumb-frame {
+  border-color: var(--color-thumb-border-active);
+}
+
+.thumb-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  filter: grayscale(var(--thumb-grayscale)) brightness(var(--thumb-brightness));
+  transform: scale(1.001);
+  transition:
+    transform calc(var(--dur-hover) * 1.4) var(--ease),
+    filter var(--dur-hover) var(--ease),
+    opacity 400ms var(--ease);
+}
+
+.thumb.has-image .thumb-img {
+  opacity: 1;
+}
+
+/* Frosted band behind the title: blur fades out toward the top */
+.thumb-shade {
+  position: absolute;
+  inset: 35% 0 0;
+  background: linear-gradient(to top, rgb(0 0 0 / 0.6), rgb(0 0 0 / 0));
+  -webkit-backdrop-filter: blur(var(--hover-blur));
+  backdrop-filter: blur(var(--hover-blur));
+  -webkit-mask-image: linear-gradient(to top, #000 40%, transparent);
+  mask-image: linear-gradient(to top, #000 40%, transparent);
+  opacity: 0;
+  transition: opacity var(--dur-hover) var(--ease);
+}
+
+.thumb.has-image .thumb-shade {
+  opacity: 0.55;
+}
+
+.thumb-label {
+  position: absolute;
+  left: 1rem;
+  right: 1rem;
+  bottom: 0.85rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.thumb-title,
+.thumb-sub {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.thumb-title {
+  font-size: var(--thumb-title-size);
+  font-weight: 400;
+  line-height: 1.25;
+  color: var(--color-heading);
+}
+
+.thumb-sub {
+  max-height: 0;
+  font-size: var(--thumb-sub-size);
+  line-height: 1.4;
+  color: rgb(255 255 255 / 0.72);
+  opacity: 0;
+  transform: translateY(0.5em);
+  transition:
+    max-height var(--dur-hover) var(--ease),
+    opacity var(--dur-hover) var(--ease),
+    transform var(--dur-hover) var(--ease);
+}
+
+/* No image: centred label, like the wireframe */
+.thumb:not(.has-image) .thumb-label {
+  inset: 0;
+  justify-content: center;
+  align-items: center;
+  padding: 0 0.75rem;
+  text-align: center;
+}
+
+.thumb:not(.has-image) .thumb-title {
+  font-weight: 300;
+  max-width: 100%;
+}
+
+/* Active (clicked) card */
+.thumb.is-active .thumb-img {
+  filter: grayscale(0) brightness(1);
+}
+
+.thumb.is-active .thumb-shade {
+  opacity: 1;
+}
+
+.thumb.is-active .thumb-sub {
+  max-height: 1.5em;
+  opacity: 1;
+  transform: none;
+}
+
+/* Hover: the card widens, its image wakes up, the neighbours step back */
+@media (hover: hover) and (pointer: fine) {
+  .thumb:is(:hover, :focus-visible) {
+    flex-grow: var(--hover-grow);
+  }
+
+  .thumb-row:has(.thumb:hover) .thumb:not(:hover, .is-active) {
+    opacity: var(--hover-dim);
+  }
+
+  .thumb:is(:hover, :focus-visible) .thumb-img {
+    filter: grayscale(0) brightness(1);
+    transform: scale(var(--hover-zoom));
+  }
+
+  .thumb:is(:hover, :focus-visible) .thumb-shade {
+    opacity: 1;
+  }
+
+  .thumb:is(:hover, :focus-visible) .thumb-sub {
+    max-height: 1.5em;
+    opacity: 1;
+    transform: none;
+  }
+
+  .thumb:not(.has-image):hover .thumb-frame {
+    background: color-mix(in srgb, var(--color-thumb-bg), #fff 6%);
+  }
+}
+
+/* Connector line: drops from the active card to the pop-up */
+.thumb::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  width: var(--line-width);
+  height: calc(var(--connector-length) + var(--panel-border-width));
+  margin-left: calc(var(--line-width) / -2);
+  background: var(--line-color);
+  transform: scaleY(0);
+  transform-origin: top;
+  transition: transform var(--dur-line) var(--ease);
+  pointer-events: none;
+}
+
+.thumb.is-active::after {
+  transform: scaleY(1);
+}
+
+/* ---- Pop-up ----------------------------------------------------------- */
+.panel-slot {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows var(--dur-panel) var(--ease);
+}
+
+.panel-slot.is-open {
+  grid-template-rows: 1fr;
+}
+
+.panel-clip {
+  min-height: 0;
+  overflow: hidden;
+}
+
+.panel-pad {
+  padding-top: var(--connector-length);
+}
+
+.panel {
+  position: relative;
+  padding: var(--panel-padding);
+  border: var(--panel-border-width) solid var(--color-panel-border);
+  border-radius: var(--panel-radius);
+  background: var(--color-panel-bg);
+}
+
+.panel-content {
+  opacity: 0;
+  transform: translateY(0.6rem);
+  transition:
+    opacity calc(var(--dur-panel) * 0.6) var(--ease) calc(var(--dur-panel) * 0.25),
+    transform var(--dur-panel) var(--ease) calc(var(--dur-panel) * 0.15);
+}
+
+.panel-slot.is-open .panel-content {
+  opacity: 1;
+  transform: none;
+}
+
+.panel.is-swapping .panel-content {
+  opacity: 0;
+  transform: translateY(0.4rem);
+  transition-duration: 180ms;
+  transition-delay: 0ms;
+}
+
+.panel .block-heading {
+  padding-right: 2.75rem;
+}
+
+.panel-close {
+  position: absolute;
+  top: calc(var(--panel-padding) - 0.55rem);
+  right: calc(var(--panel-padding) - 0.75rem);
+  width: 2.25rem;
+  height: 2.25rem;
+  padding: 0;
+  border: var(--line-width) solid transparent;
+  border-radius: 50%;
+  background: none;
+  color: var(--color-muted);
+  cursor: pointer;
+  transition:
+    color 200ms var(--ease),
+    border-color 200ms var(--ease);
+}
+
+.panel-close::before,
+.panel-close::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0.95rem;
+  height: var(--line-width);
+  background: currentColor;
+}
+
+.panel-close::before {
+  transform: translate(-50%, -50%) rotate(45deg);
+}
+
+.panel-close::after {
+  transform: translate(-50%, -50%) rotate(-45deg);
+}
+
+.panel-close:hover {
+  color: var(--color-heading);
+  border-color: var(--color-panel-border);
+}
+
+.panel-close:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 2px;
+  color: var(--color-heading);
+}
+
+/* ---- Media grid ------------------------------------------------------- */
+.media-grid {
+  display: grid;
+  grid-template-columns: repeat(var(--media-columns), minmax(0, 1fr));
+  gap: var(--media-gap);
+  margin-top: var(--panel-text-gap);
+}
+
+.media-slot {
+  position: relative;
+  margin: 0;
+  aspect-ratio: var(--media-aspect);
+  overflow: hidden;
+  border-radius: var(--media-radius);
+  background: var(--color-thumb-bg);
+}
+
+.media-slot > img,
+.media-slot > video {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 500ms var(--ease);
+}
+
+.media-slot.is-ready > img,
+.media-slot.is-ready > video {
+  opacity: 1;
+}
+
+.media-slot.is-empty {
+  background: var(--color-media-bg);
+}
+
+.media-empty {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-content: center;
+  gap: 0.6rem;
+  padding: 1.5rem;
+  text-align: center;
+  color: var(--color-media-text);
+}
+
+.media-empty strong {
+  font-family: var(--font-heading);
+  font-size: clamp(1.6rem, 1rem + 2vw, 2.5rem);
+  font-weight: 300;
+  line-height: 1;
+}
+
+.media-empty span {
+  font-size: 0.85rem;
+  opacity: 0.7;
+  overflow-wrap: anywhere;
+}
+
+/* ---- Reduced motion --------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --dur-hover: 1ms;
+    --dur-panel: 1ms;
+    --dur-line: 1ms;
+    --hover-zoom: 1;
+  }
+}
